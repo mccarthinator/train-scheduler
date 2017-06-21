@@ -34,26 +34,25 @@ $("#submit-bid").on("click", function(event) {
 });
 
 
-
-//look at lauren code for calculations 
-
+//monthsWorked = nextArrival (HH:mm)
+//billed = minsAway
 database.ref().on("child_added", function(childSnapshot) { 
             var name = childSnapshot.val().NAME;    
             var destination = childSnapshot.val().DESTINATION;
             var trainTime = childSnapshot.val().TRAINTIME;
             var frequency = childSnapshot.val().FREQUENCY;
 
-			var change = moment(trainTime).format("MM/DD/YY");
+			var change = moment(trainTime).format("HH:mm");
 	        console.log(change);
 
-	        var months = moment(change).diff(moment(), "months");
-	        var monthsWorked = Math.abs(months);	
+	        var mins = moment(change).diff(moment(), "mins");
+	        var nextArrival = Math.abs(mins);	
 
-	        var billed = monthsWorked * frequency;	
+	        var minsAway = nextArrival * frequency;	
 
 
             var newRow = $("<tr>"); 
-            newRow.html("<td>" + name + "</td><td>" + destination + "</td><td>" + trainTime + "</td><td>" + frequency + "</td><td>" + monthsWorked + "</td><td>" + billed + "</td>");
+            newRow.html("<td>" + name + "</td><td>" + destination + "</td><td>" + trainTime + "</td><td>" + frequency + "</td><td>" + nextArrival + "</td><td>" + minsAway + "</td>");
             
             $('#dataentry').append(newRow);     
 });
