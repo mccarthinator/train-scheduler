@@ -1,5 +1,7 @@
-#topSection {
-	color: white;
+#titleblock {
+	background-color: #991b9a;
+}
+
+#jumbotron {
 	background-color: blue;
-	height: 100px;
 }
