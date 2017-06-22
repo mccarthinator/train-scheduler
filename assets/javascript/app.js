@@ -7,10 +7,10 @@
     storageBucket: "train-scheduler-6d989.appspot.com",
     messagingSenderId: "84618430914"
   };
-  firebase.initializeApp(config);
-  
-// Create a variable to reference the database.
-var database = firebase.database();
+    
+    firebase.initializeApp(config);
+    // Creating a variable to reference the database.
+    var database = firebase.database();
 
 
 // When users click "submit"
@@ -37,8 +37,6 @@ $("#submit-bid").on("click", function(event) {
 });
 
 
-//monthsWorked = nextArrival (HH:mm)
-//billed = minsAway
 database.ref().on("child_added", function(childSnapshot) { 
     var name = childSnapshot.val().NAME;    
     var destination = childSnapshot.val().DESTINATION;
