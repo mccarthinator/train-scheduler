@@ -19,7 +19,7 @@ $("#submit-bid").on("click", function(event) {
 // This line prevents the page from refreshing when a user hits "enter".
 	event.preventDefault();
 
-//get input
+//global vars
 	var name = $("#name").val().trim();
 	var destination = $("#destination").val().trim();
 	var trainTime = $("#trainTime").val().trim();
@@ -43,10 +43,10 @@ database.ref().on("child_added", function(childSnapshot) {
     var trainTime = childSnapshot.val().TRAINTIME;
     var frequency = childSnapshot.val().FREQUENCY;
 
-	var change = moment(trainTime).format("HH:mm");
+	var change = moment(trainTime).format("HH:mm a");
     console.log(change);
 
-    var minutes = moment(change).diff(moment(), "minutes");
+    var minutes = moment(change).diff(moment(), "m:mm");
     var nextArrival = Math.abs(minutes);	
 
     var minsAway = nextArrival * frequency;	
