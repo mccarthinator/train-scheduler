@@ -27,7 +27,7 @@ $("#submit-bid").on("click", function(event) {
 
   	database.ref().push({
 
-//add new data to firebase
+//adds new data to firebase
 	NAME:name, 
 	DESTINATION:destination, 
 	TRAINTIME:trainTime,
@@ -36,50 +36,37 @@ $("#submit-bid").on("click", function(event) {
 	})
 });
 
-// this is snapshotting user input and pushing it to firebase, I think.
+// this is snapshotting user input and pushing it to firebase..... I think.
 database.ref().on("child_added", function(childSnapshot) { 
     var name = childSnapshot.val().NAME;    
     var destination = childSnapshot.val().DESTINATION;
     var trainTime = childSnapshot.val().TRAINTIME;
     var frequency = childSnapshot.val().FREQUENCY;
 
-            var firstTimeConverted = moment(trainTime, "HH:mm");
-            console.log("TEST: " + firstTimeConverted);
+// making the momentJS code magic happen
+    var firstTimeConverted = moment(trainTime, "HH:mm");
 
+    // this represents what time it is every second in the real world
+    var now = moment();
+ 
+    // this shows the difference between the real time and the time until next train 
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    
+    // this is the remainder (in mins) between the diffTime var and the frequency var
+    var tRemainder = diffTime % frequency;
+   
 
-            var now = moment();
-            console.log("CURRENT TIME: " + moment(now).format("HH:mm"));
+    // mins til next train
+    var tMinutesTilTrain = frequency - tRemainder;
+   
 
-
-            var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-            console.log("DIFFERENCE IN TIME: " + diffTime);
-
-
-            var tRemainder = diffTime % frequency;
-            console.log("REMAINDER: " + tRemainder);
-
-                // Minutes Until Train
-            var tMinutesTilTrain = frequency - tRemainder;
-            console.log("MINUTES UNTIL TRAIN: " + tMinutesTilTrain);
-
-                // Next Train
-            var nextTrain = moment().add(tMinutesTilTrain, "minutes");
-            var theNextTrain = moment(nextTrain).format("hh:mm"); 
-            
-            console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-
-
-            var newRow = $("<tr>"); 
-            newRow.html("<td>" + name + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + theNextTrain + "</td><td>" + tMinutesTilTrain + "</td>");
-            
-            $('#dataentry').append(newRow);   
+    var nextTrain = moment().add(tMinutesTilTrain, "minutes");
+    var theNextTrain = moment(nextTrain).format("hh:mm"); 
+    
+    // makin new rows for each user train input, so they show up in the table
+    var newRow = $("<tr>"); 
+    newRow.html("<td>" + name + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + theNextTrain + "</td><td>" + tMinutesTilTrain + "</td>");
+    
+    $('#dataentry').append(newRow);   
 
 });
-
-
-
-
-
-
-
-
