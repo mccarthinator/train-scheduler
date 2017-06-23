@@ -9,7 +9,7 @@
   };
     
     firebase.initializeApp(config);
-    // Creating a variable to reference the database.
+// Creating a variable to reference the database.
     var database = firebase.database();
 
 
@@ -36,24 +36,50 @@ $("#submit-bid").on("click", function(event) {
 	})
 });
 
-
+// this is snapshotting user input and pushing it to firebase, I think.
 database.ref().on("child_added", function(childSnapshot) { 
     var name = childSnapshot.val().NAME;    
     var destination = childSnapshot.val().DESTINATION;
     var trainTime = childSnapshot.val().TRAINTIME;
     var frequency = childSnapshot.val().FREQUENCY;
 
-	var change = moment(trainTime).format("HH:mm a");
-    console.log(change);
-
-    var minutes = moment(change).diff(moment(), "m:mm");
-    var nextArrival = Math.abs(minutes);	
-
-    var minsAway = nextArrival * frequency;	
+            var firstTimeConverted = moment(trainTime, "HH:mm");
+            console.log("TEST: " + firstTimeConverted);
 
 
-    var newRow = $("<tr>"); 
-    newRow.html("<td>" + name + "</td><td>" + destination + "</td><td>" + trainTime + "</td><td>" + frequency + "</td><td>" + nextArrival + "</td><td>" + minsAway + "</td>");
-    
-    $('#dataentry').append(newRow);     
+            var now = moment();
+            console.log("CURRENT TIME: " + moment(now).format("HH:mm"));
+
+
+            var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+            console.log("DIFFERENCE IN TIME: " + diffTime);
+
+
+            var tRemainder = diffTime % frequency;
+            console.log("REMAINDER: " + tRemainder);
+
+                // Minutes Until Train
+            var tMinutesTilTrain = frequency - tRemainder;
+            console.log("MINUTES UNTIL TRAIN: " + tMinutesTilTrain);
+
+                // Next Train
+            var nextTrain = moment().add(tMinutesTilTrain, "minutes");
+            var theNextTrain = moment(nextTrain).format("hh:mm"); 
+            
+            console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+
+
+            var newRow = $("<tr>"); 
+            newRow.html("<td>" + name + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + theNextTrain + "</td><td>" + tMinutesTilTrain + "</td>");
+            
+            $('#dataentry').append(newRow);   
+
 });
+
+
+
+
+
+
+
+
