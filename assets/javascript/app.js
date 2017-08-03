@@ -1,6 +1,17 @@
- // Initialize Firebase
+// in keys.js
+var KEYS = {
+    apiKey: 'AIzaSyDO9Azjw5mtkjWVIOzB4-N6x9bLuwM0PH4'
+};
+
+
+
+//Bring in the keys object
+var KEYS = KEYS || {};
+
+// Initialize Firebase
   var config = {
-    apiKey: "AIzaSyDO9Azjw5mtkjWVIOzB4-N6x9bLuwM0PH4",
+    //apiKey: "AIzaSyDO9Azjw5mtkjWVIOzB4-N6x9bLuwM0PH4",
+    apiKey: KEYS.apiKey,
     authDomain: "train-scheduler-6d989.firebaseapp.com",
     databaseURL: "https://train-scheduler-6d989.firebaseio.com",
     projectId: "train-scheduler-6d989",
